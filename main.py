@@ -125,7 +125,7 @@ while start_program:
         input("press any key to continue.....")
     elif opcion == "4":
         borrar=input("id carrera para borrar")
-        req.delete("/borrar/carrera/"+borrar)
+        req.delete(f"http://localhost:5000/borrar/carrera/{borrar}")
     elif opcion == "5":
         #cursor.close()
         #conexion.close()
