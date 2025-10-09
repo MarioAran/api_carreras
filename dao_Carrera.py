@@ -25,12 +25,6 @@ def añadir_carrera(cur,nueva_carrera):
     except mysql.connector.Error as err:
         print("Error al insertar la carrera (añadir_carrera):", err)
         
-def añadir_carrera_id(cur,modificar_carrera):
-    try:
-        cur.execute("INSERT INTO carrera (id_Carrera,Nombre_Carrera,Nota_de_corte,Duracion) VALUES (%s,%s,%s,%s) ", (modificar_carrera.getter_id(),modificar_carrera.getter(),modificar_carrera.get_nota_corte(),modificar_carrera.get_duracion(),))
-    except mysql.connector.Error as err:
-        print("Error al insertar la carrera (añadir_carrera_id): ", err)
-        
 def modificar_carrera(cur, id_carrera, nombre_carrera, nota_corte, duracion):
     try:
         cur.execute(
@@ -41,7 +35,6 @@ def modificar_carrera(cur, id_carrera, nombre_carrera, nota_corte, duracion):
     except mysql.connector.Error as err:
         print(f"Error al modificar la carrera: {err}")
         return 0
-
          
 def ver_carreras(cur):
     try:

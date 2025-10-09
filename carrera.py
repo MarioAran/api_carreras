@@ -9,22 +9,27 @@ class carrera:
         return self.__nombre_carrera
     def set_nombre_carrera(self, nuevo_nombre):
         self.__nombre_carrera = nuevo_nombre
+    
     def get_id_carrera(self):
         return self.__id_carrera
     def set_id_carrera(self, nuevo_id):
         self.__id_carrera = nuevo_id
+    
     def get_nota_corte(self):
         return self.__nota_corte
     def set_nota_corte(self, nueva_nota):
         self.__nota_corte = nueva_nota
+    
     def get_duracion(self):
         return self.__duracion
     def set_duracion(self, nueva_duracion):
         self.__duracion = nueva_duracion
+    
     def getter(self):
         return self.__nombre_carrera
     def setter(self, nuevo_nombre):
         self.__nombre_carrera = nuevo_nombre 
+    
     def getter_id(self):
         return self.__id_carrera
     def __str__(self):
