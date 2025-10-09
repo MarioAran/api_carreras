@@ -2,6 +2,7 @@ import requests as req
 import dao_Carrera as dao
 import carrera as c
 import os
+import json
 import mysql.connector
 carreras=[]
 start_program = True
@@ -98,14 +99,29 @@ while start_program:
     opcion = input("Selecciona una opción: ")
 
     if opcion == "1":
-        #añadir_carrera(cursor)
-        pass
+        nombre = input("Introduce el nombre de la carrera: ")
+        duracion = input("Introduce la duración de la carrera (en años): ") 
+        try:
+            nota_corte = float(input("Introduce la nota de corte de la carrera: "))
+        except ValueError:
+            print("la nota de corte debe ser un número.")
+            try:
+                nota_corte = float(input("Introduce la nota de corte de la carrera: "))
+            except ValueError:
+                print("la nota de corte debe ser un número.")
+    
+        if nota_corte < 0 or nota_corte > 14:
+            print("La nota de corte debe estar entre 0 y 14.")
+        else:
+            response = req.post(f"http://localhost:5000/agregar/carrera?nombre={nombre}&nota={nota_corte}&duracion={duracion}")
+        print(response.json())
     elif opcion == "2":
         #actualizar_carrera(cursor)
         pass
     elif opcion == "3":
         response = req.get("http://localhost:5000/ver/carreras/")
-        print(response.content)
+        print(json.dumps(response.json(), indent=4, ensure_ascii=False))
+        
         input("press any key to continue.....")
     elif opcion == "4":
         borrar=input("id carrera para borrar")

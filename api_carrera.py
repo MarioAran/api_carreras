@@ -28,19 +28,27 @@ def api_borrar_carreras(id):
     carrera = c.carrera(id_carrera=id)
     return jsonify(dao.borrar_carrera(cursor,carrera))
 
-@app.route('/agregar/carrera/', methods=['POST'])
+@app.route('/agregar/carrera', methods=['POST'])
 def api_agregar_carrera():
-    data = request.get_json()
-    nombre = data.get("nombre")
-    nota_corte = data.get("nota_corte")
-    duracion = data.get("duracion")
-    carrera_agregar = c.carrera(nombre,"",nota_corte,duracion)
+    nombre = request.args.get('nombre')
+    nota = request.args.get('nota')
+    duracion = request.args.get('duracion')
+
     if not nombre:
         return jsonify({"error": "Falta el nombre de la carrera"}), 400
 
+    try:
+        nota = float(nota)
+        duracion = int(duracion)
+    except (TypeError, ValueError):
+        return jsonify({"error": "Valores inválidos para nota o duración"}), 400
+
+    carrera_agregar = c.carrera(nombre, "", nota, duracion)
     dao.añadir_carrera(cursor, carrera_agregar)
     conexion.commit()
-    return jsonify({"mensaje": f"Carrera '{nombre}' añadida correctamente"}), 201
+
+    print(f"[DEBUG] Carrera añadida: {nombre} ({nota}, {duracion})")
+    return jsonify({"mensaje": "Carrera agregada correctamente"})
 
 if __name__ == "__main__":
     print("Iniciando servidor Flask en http://127.0.0.1:5000 ...")
