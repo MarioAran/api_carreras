@@ -1,4 +1,4 @@
-CREATE DATABASE  IF NOT EXISTS `carreras` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
+CREATE DATABASE IF NOT EXISTS `carreras` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
 USE `carreras`;
 -- MySQL dump 10.13  Distrib 8.0.43, for macos15 (x86_64)
 --
@@ -39,7 +39,15 @@ CREATE TABLE `carrera` (
 
 LOCK TABLES `carrera` WRITE;
 /*!40000 ALTER TABLE `carrera` DISABLE KEYS */;
-INSERT INTO `carrera` VALUES (1,'Ingeniería Informática',NULL,NULL),(2,'Ingeniería Industrial',NULL,NULL),(3,'Administración de Empresas',NULL,NULL),(4,'Medicina',NULL,NULL),(5,'Derecho',NULL,NULL),(6,'Arquitectura',NULL,NULL),(7,'Psicología',NULL,NULL),(8,'Comunicación',NULL,NULL);
+INSERT INTO `carrera` (`Id_Carrera`, `Nombre_Carrera`, `Duracion`, `Nota_de_corte`) VALUES
+(1, 'Ingeniería Informática', '4', 8.50),
+(2, 'Ingeniería Industrial', '5', 7.80),
+(3, 'Administración de Empresas', '4', 7.20),
+(4, 'Medicina', '6', 12.50),
+(5, 'Derecho', '5', 9.10),
+(6, 'Arquitectura', '5', 8.00),
+(7, 'Psicología', '4', 7.90),
+(8, 'Comunicación', '4', 6.80);
 /*!40000 ALTER TABLE `carrera` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
