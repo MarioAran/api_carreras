@@ -1,138 +1,195 @@
-import requests as req
-import dao_Carrera as dao
-import carrera as c
-import os
 import json
-import mysql.connector
-carreras=[]
-start_program = True
-# Código para activar la negrita
-NEGRITA = '\033[1m'
-# Código para restablecer el formato (desactiva la negrita)
-RESET = '\033[0m'
-# gestor_carreras.py
+import requests as req
+import os
+import sys
+import time
 
+VERDE = "\033[92m"
+ROJO = "\033[91m"
+AMARILLO = "\033[93m"
+AZUL = "\033[94m"
+NEGRITA = "\033[1m"
+RESET = "\033[0m"
+
+API_BASE = "http://localhost:5000"
+
+def limpiar_pantalla():
+    os.system('cls' if os.name == 'nt' else 'clear')
 
 def pausa():
-    input("\nPresiona cualquier tecla para continuar...")
+    input(f"\n{AZUL}Presiona ENTER para continuar...{RESET}")
 
 def mostrar_menu():
-    print("\n--- MENÚ GESTOR DE CARRERAS ---")
-    print("1. Añadir carrera")
-    print("2. Actualizar carrera")
-    print("3. Ver carreras")
-    print("4. Borrar carrera")
-    print("5. Salir")
+    print(f"""{NEGRITA}
+=============================
+     GESTOR DE CARRERAS
+=============================
+{RESET}
+1. Añadir carrera
+2. Actualizar carrera
+3. Ver carreras
+4. Borrar carrera
+5. Salir
+=============================""")
 
-def añadir_carrera(cursor):
-    nombre = input("Introduce el nombre de la carrera: ")
-    duracion = input("Introduce la duración de la carrera (en años): ") 
+def comprobar_conexion():
     try:
-        nota_corte = float(input("Introduce la nota de corte de la carrera: "))
-    except ValueError:
-        print("la nota de corte debe ser un número.")
+        req.get(API_BASE + "/", timeout=3)
+        return True
+    except req.exceptions.RequestException:
+        print(f"{ROJO}No se pudo conectar con el servidor Flask. Asegúrate de que esté ejecutándose.{RESET}")
+        return False
+
+def input_numerico(mensaje, tipo=int, minimo=None, maximo=None):
+    while True:
+        valor = input(mensaje).strip()
         try:
-            nota_corte = float(input("Introduce la nota de corte de la carrera: "))
+            if tipo == int:
+                valor = int(valor)
+            else:
+                valor = float(valor)
+            if minimo is not None and valor < minimo:
+                print(f"{AMARILLO}El valor debe ser mayor o igual que {minimo}.{RESET}")
+                continue
+            if maximo is not None and valor > maximo:
+                print(f"{AMARILLO}El valor debe ser menor o igual que {maximo}.{RESET}")
+                continue
+            return valor
         except ValueError:
-            print("la nota de corte debe ser un número.")
+            print(f"{ROJO}Entrada inválida. Introduce un número válido.{RESET}")
+
+def añadir_carrera():
+    limpiar_pantalla()
+    print(f"\n{NEGRITA}--- AÑADIR CARRERA ---{RESET}")
+
+    nombre = input("Nombre de la carrera: ").strip()
+    duracion = input_numerico("Duración (en años): ", tipo=int, minimo=1)
+    nota_corte = input_numerico("Nota de corte (0 - 14): ", tipo=float, minimo=0, maximo=14)
+
+    payload = {"nombre": nombre, "duracion": duracion, "nota_corte": nota_corte}
+
+    try:
+        response = req.post(f"{API_BASE}/agregar/carrera/", json=payload, timeout=5)
+    except req.exceptions.RequestException:
+        print(f"{ROJO}Error: No se pudo conectar con el servidor.{RESET}")
+        pausa()
+        return
+
+    if response.status_code == 201:
+        print(f"\n{VERDE}Carrera '{nombre}' añadida correctamente.{RESET}")
+    else:
+        print(f"\n{ROJO}Error: {response.text}{RESET}")
+    pausa()
+
+def actualizar_carrera():
+    limpiar_pantalla()
+    print(f"\n{NEGRITA}--- ACTUALIZAR CARRERA ---{RESET}")
+
+    id_carrera = input_numerico("ID de la carrera a actualizar: ", tipo=int, minimo=1)
+    nombre = input("Nuevo nombre: ").strip()
+    duracion = input_numerico("Nueva duración (en años): ", tipo=int, minimo=1)
+    nota_corte = input_numerico("Nueva nota de corte (0 - 14): ", tipo=float, minimo=0, maximo=14)
+
+    payload = {"nombre": nombre, "duracion": duracion, "nota_corte": nota_corte}
+
+    try:
+        response = req.put(f"{API_BASE}/actualizar/carrera/{id_carrera}", json=payload, timeout=5)
+    except req.exceptions.RequestException:
+        print(f"{ROJO}Error: No se pudo conectar con el servidor.{RESET}")
+        pausa()
+        return
+
+    if response.status_code == 200:
+        print(f"\n{VERDE}Carrera '{nombre}' actualizada correctamente.{RESET}")
+    elif response.status_code == 404:
+        print(f"\n{AMARILLO}Carrera no encontrada.{RESET}")
+    else:
+        print(f"\n{ROJO}Error: {response.text}{RESET}")
+    pausa()
+
+def ver_carreras():
+    limpiar_pantalla()
+    print(f"\n{NEGRITA}--- LISTA DE CARRERAS ---{RESET}")
+
+    try:
+        response = req.get(f"{API_BASE}/ver/carreras/", timeout=5)
+    except req.exceptions.RequestException:
+        print(f"{ROJO}Error: No se pudo conectar con el servidor.{RESET}")
+        pausa()
+        return
+
+    if response.status_code == 200:
+        try:
+            data = response.json()
+        except json.JSONDecodeError:
+            print(f"{ROJO}Error: respuesta no válida del servidor.{RESET}")
+            pausa()
             return
-    if nota_corte < 0 or nota_corte > 14:
-        print("la nota de corte debe estar entre 0 y 14.")
-    else:
-        nueva_carrera = c.carrera(nombre,"",nota_corte,duracion)
-        dao.añadir_carrera(cursor, nueva_carrera)
-       # conexion.commit()
-        print(f"\nla carrera {NEGRITA}{nombre}{RESET} se ha añadido.\n")
-    pausa()
 
-def actualizar_carrera(cursor):
-    id_carrera = input("Introduce el ID de la carrera a actualizar: ")
-    nombre_carrera = input("Introduce el nuevo nombre de la carrera: ")
-    notaDeCorte = input("Introduce la nueva nota de corte de la carrera: ")
-    duracion = input("Introduce la nueva duración de la carrera (en años): ")
-    modificar_carrera = c.carrera(nombre_carrera,id_carrera,notaDeCorte,duracion)
-    resultados = dao.modificar_carrera(cursor,modificar_carrera)
-    #conexion.commit()
-    if id_carrera in [str(i.getter_id()) for i in carreras]:  
-        for i in resultados:
-            print(f"\nLa carrera {NEGRITA}{i[0]}{RESET} se ha modificado a {NEGRITA}{nombre_carrera}{RESET}.\n")
-    else:
-        print("\nCarrera no encontrada.\n")
-    pausa()
-
-def ver_carreras(cursor):
-    del carreras[:]
-    resultados = dao.ver_carreras(cursor)
-    if not resultados:
-        print("No hay carreras registradas.")
-    else:
-        print("\n--- LISTA DE CARRERAS ---")
-        for (id_Carrera,Nombre_Carrera,nota_corte,duracion) in resultados:
-            carreras.append(c.carrera(Nombre_Carrera,id_Carrera,duracion,nota_corte))
-
-def borrar_carrera(cursor):
-    id_carrera = input("Introduce el ID de la carrera a borrar: ")
-    borrar_carrera = c.carrera("",id_carrera)
-    resultados = dao.borrar_carrera(cursor,borrar_carrera)
-    #conexion.commit()
-    if not resultados:
-        print("\nCarrera no encontrada.\n")
-    else:
-        for i in resultados:
-            print(f"\nLa carrera {NEGRITA}{i[0]}{RESET} se ha borrado.\n")
-    pausa()
-    
-#query personalizada 
-def user_query(cursor):
-    query = input("Introduce la consulta SQL: ")
-    resultados=dao.user_query(cursor,query)
-    if not resultados:
-        print("No hay resultados.")
-    else:
-        for row in resultados:
-            print(row)
-    pausa()
-# Programa principal
-while start_program:
-    os.system('cls' if os.name == 'nt' else 'clear')
-    mostrar_menu()
-    opcion = input("Selecciona una opción: ")
-
-    if opcion == "1":
-        nombre = input("Introduce el nombre de la carrera: ")
-        duracion = input("Introduce la duración de la carrera (en años): ") 
-        try:
-            nota_corte = float(input("Introduce la nota de corte de la carrera: "))
-        except ValueError:
-            print("la nota de corte debe ser un número.")
-            try:
-                nota_corte = float(input("Introduce la nota de corte de la carrera: "))
-            except ValueError:
-                print("la nota de corte debe ser un número.")
-    
-        if nota_corte < 0 or nota_corte > 14:
-            print("La nota de corte debe estar entre 0 y 14.")
+        if not data:
+            print(f"{AMARILLO}No hay carreras registradas.{RESET}")
         else:
-            response = req.post(f"http://localhost:5000/agregar/carrera?nombre={nombre}&nota={nota_corte}&duracion={duracion}")
-        print(response.json())
-    elif opcion == "2":
-        #actualizar_carrera(cursor)
-        pass
-    elif opcion == "3":
-        response = req.get("http://localhost:5000/ver/carreras/")
-        print(json.dumps(response.json(), indent=4, ensure_ascii=False))
-        
-        input("press any key to continue.....")
-    elif opcion == "4":
-        borrar=input("id carrera para borrar")
-        req.delete(f"http://localhost:5000/borrar/carrera/{borrar}")
-    elif opcion == "5":
-        #cursor.close()
-        #conexion.close()
-        print("\nSaliendo del programa...\n")
-        start_program = False
-    elif opcion == "0":
-        pass
-        # user_query(cursor)
+            print(f"\n{AZUL}Total: {len(data)} carreras registradas.{RESET}\n")
+            for c in data:
+                print(f"[{c['Id_Carrera']}] {NEGRITA}{c['Nombre_Carrera']}{RESET} "
+                      f"({c['Duracion']} años) - Nota: {c['Nota_de_corte']}")
+            print(f"\n{AZUL}--- JSON completo ---{RESET}\n")
+            print(json.dumps(data, indent=4, ensure_ascii=False))
     else:
-        print("Opción no válida.")
+        print(f"{ROJO}Error al obtener las carreras.{RESET}")
+    pausa()
+
+def borrar_carrera():
+    limpiar_pantalla()
+    print(f"\n{NEGRITA}--- BORRAR CARRERA ---{RESET}")
+
+    id_carrera = input_numerico("ID de la carrera a borrar: ", tipo=int, minimo=1)
+    confirmacion = input(f"{AMARILLO}¿Seguro que quieres borrar la carrera con ID {id_carrera}? (s/n): {RESET}").lower()
+
+    if confirmacion != 's':
+        print("Operación cancelada.")
+        pausa()
+        return
+
+    try:
+        response = req.delete(f"{API_BASE}/borrar/carrera/{id_carrera}", timeout=5)
+    except req.exceptions.RequestException:
+        print(f"{ROJO}Error: No se pudo conectar con el servidor.{RESET}")
+        pausa()
+        return
+
+    if response.status_code == 200:
+        print(f"{VERDE}{response.json()['mensaje']}{RESET}")
+    elif response.status_code == 404:
+        print(f"{AMARILLO}Carrera no encontrada.{RESET}")
+    else:
+        print(f"{ROJO}Error: {response.text}{RESET}")
+    pausa()
+
+def main():
+    if not comprobar_conexion():
+        sys.exit()
+
+    while True:
+        limpiar_pantalla()
+        mostrar_menu()
+        opcion = input(f"{AZUL}Selecciona una opción: {RESET}").strip()
+
+        if opcion == "1":
+            añadir_carrera()
+        elif opcion == "2":
+            actualizar_carrera()
+        elif opcion == "3":
+            ver_carreras()
+        elif opcion == "4":
+            borrar_carrera()
+        elif opcion == "5":
+            print(f"\n{VERDE}Saliendo del programa...{RESET}\n")
+            time.sleep(1)
+            break
+        else:
+            print(f"{AMARILLO}Opción no válida.{RESET}")
+            pausa()
+
+if __name__ == "__main__":
+    main()

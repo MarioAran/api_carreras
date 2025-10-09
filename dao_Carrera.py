@@ -31,17 +31,17 @@ def añadir_carrera_id(cur,modificar_carrera):
     except mysql.connector.Error as err:
         print("Error al insertar la carrera (añadir_carrera_id): ", err)
         
-def modificar_carrera(cursor,modificar_carrera):
+def modificar_carrera(cur, id_carrera, nombre_carrera, nota_corte, duracion):
     try:
-        borrar_carrera(cursor,modificar_carrera.getter_id())
-    except:
-        pass
-    try:
-        añadir_carrera_id(cursor,modificar_carrera)
-        resultados = cursor.fetchall()
-        return resultados
+        cur.execute(
+            "UPDATE carrera SET Nombre_Carrera=%s, Nota_de_corte=%s, Duracion=%s WHERE Id_Carrera=%s",
+            (nombre_carrera, nota_corte, duracion, id_carrera)
+        )
+        return cur.rowcount
     except mysql.connector.Error as err:
-        print("Error al modificar la carrera en (modificar_carrera) :", err) 
+        print(f"Error al modificar la carrera: {err}")
+        return 0
+
          
 def ver_carreras(cur):
     try:
