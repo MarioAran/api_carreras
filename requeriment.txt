@@ -1,4 +1,0 @@
-pip install mysql.connector
-pip install json
-pip install requests 
-pip install flask 
