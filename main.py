@@ -106,6 +106,7 @@ def ver_carreras():
         return
     if response.status_code == 200:
         try:
+            
             data = response.json()
         except json.JSONDecodeError as err:
             print(f"{ROJO}Error: respuesta no válida del servidor.{RESET}")
@@ -116,8 +117,8 @@ def ver_carreras():
             for c in data:
                 print(f"[{c['Id_Carrera']}] {NEGRITA}{c['Nombre_Carrera']}{RESET} "
                       f"({c['Duracion']} años) - Nota: {c['Nota_de_corte']}")
-          #  print(f"\n{AZUL}--- JSON completo ---{RESET}\n")
-          # print(json.dumps(data, indent=4, ensure_ascii=False))
+            print(f"\n{AZUL}--- JSON completo ---{RESET}\n")
+            #print(json.dumps(data, indent=4, ensure_ascii=False))
     else:
         print(f"{ROJO}Error al obtener las carreras.{RESET}")
 
@@ -174,5 +175,6 @@ def main():
         else:
             print(f"{AMARILLO}Opción no válida.{RESET}")
             pausa()
+
 if __name__ == "__main__":
     main()
