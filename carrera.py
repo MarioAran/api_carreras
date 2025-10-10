@@ -29,9 +29,17 @@ class carrera:
         return self.__nombre_carrera
     def setter(self, nuevo_nombre):
         self.__nombre_carrera = nuevo_nombre 
-    
-    def getter_id(self):
-        return self.__id_carrera
+
+    def to_dict(self):
+        """Convierte el objeto carrera en un diccionario (para JSON)."""
+        return {
+            "Id_Carrera": self.__id_carrera,
+            "Nombre_Carrera": self.__nombre_carrera,
+            "Nota_de_corte": self.__nota_corte,
+            "Duracion": self.__duracion
+        }
+
+
     def __str__(self):
         if  1 ==  len(str(self.__id_carrera)):
             return f"[{self.__id_carrera}]  -> {self.__nombre_carrera} - Nota de corte: {self.__nota_corte} - Duración: {self.__duracion} años"
