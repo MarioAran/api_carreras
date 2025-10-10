@@ -55,12 +55,16 @@ def api_actualizar_carrera(id_carrera):
 
     if not nombre:
         return jsonify({"error": "Falta el nombre de la carrera"}), 400
+    if not nota:
+        return jsonify({"error": "Falta la nota  de la carrera"}), 400
+    if not duracion:
+        return jsonify({"error": "Falta la duracion de la carrera"}), 400
 
     try:
         nota = float(nota)
         duracion = int(duracion)
     except (TypeError, ValueError):
-        return jsonify({"error": "Valores inválidos para nota o duración"}), 400
+        return jsonify({"error": "Valores invalidos para nota o duracion"}), 400
 
     filas = dao.modificar_carrera(cursor, id_carrera, nombre, nota, duracion)
     conexion.commit()

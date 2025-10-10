@@ -3,7 +3,7 @@ import requests as req
 import os
 import sys
 import time
-
+import flask 
 VERDE = "\033[92m"
 ROJO = "\033[91m"
 AMARILLO = "\033[93m"
@@ -41,6 +41,7 @@ def comprobar_conexion():
         return False
 
 def input_numerico(mensaje, tipo=int, minimo=None, maximo=None):
+    intentos = 0
     while True:
         valor = input(mensaje).strip()
         try:
@@ -56,10 +57,12 @@ def input_numerico(mensaje, tipo=int, minimo=None, maximo=None):
                 continue
             return valor
         except ValueError:
+            intentos +=1
             print(f"{ROJO}Entrada inválida. Introduce un número válido.{RESET}")
-
+            if intentos >=3:
+                break
+    
 def añadir_carrera():
-    limpiar_pantalla()
     print(f"\n{NEGRITA}--- AÑADIR CARRERA ---{RESET}")
     nombre = input("Nombre de la carrera: ").strip()
     duracion = input_numerico("Duración (en años): ", tipo=int, minimo=1)
@@ -69,16 +72,13 @@ def añadir_carrera():
         response = req.post(f"{API_BASE}/agregar/carrera/", json=payload, timeout=5)
     except req.exceptions.RequestException:
         print(f"{ROJO}Error: No se pudo conectar con el servidor.{RESET}")
-        pausa()
         return
     if response.status_code == 201:
         print(f"\n{VERDE}Carrera '{nombre}' añadida correctamente.{RESET}")
     else:
         print(f"\n{ROJO}Error: {response.text}{RESET}")
-    pausa()
 
 def actualizar_carrera():
-    limpiar_pantalla()
     print(f"\n{NEGRITA}--- ACTUALIZAR CARRERA ---{RESET}")
     id_carrera = input_numerico("ID de la carrera a actualizar: ", tipo=int, minimo=1)
     nombre = input("Nuevo nombre: ").strip()
@@ -89,7 +89,6 @@ def actualizar_carrera():
         response = req.put(f"{API_BASE}/actualizar/carrera/{id_carrera}", json=payload, timeout=5)
     except req.exceptions.RequestException:
         print(f"{ROJO}Error: No se pudo conectar con el servidor.{RESET}")
-        pausa()
         return
     if response.status_code == 200:
         print(f"\n{VERDE}Carrera '{nombre}' actualizada correctamente.{RESET}")
@@ -97,24 +96,19 @@ def actualizar_carrera():
         print(f"\n{AMARILLO}Carrera no encontrada.{RESET}")
     else:
         print(f"\n{ROJO}Error: {response.text}{RESET}")
-    pausa()
 
 def ver_carreras():
-    limpiar_pantalla()
     print(f"\n{NEGRITA}--- LISTA DE CARRERAS ---{RESET}")
     try:
         response = req.get(f"{API_BASE}/ver/carreras/", timeout=5)
     except req.exceptions.RequestException:
         print(f"{ROJO}Error: No se pudo conectar con el servidor.{RESET}")
-        pausa()
         return
     if response.status_code == 200:
         try:
             data = response.json()
-        except json.JSONDecodeError:
+        except json.JSONDecodeError as err:
             print(f"{ROJO}Error: respuesta no válida del servidor.{RESET}")
-            pausa()
-            return
         if not data:
             print(f"{AMARILLO}No hay carreras registradas.{RESET}")
         else:
@@ -122,26 +116,22 @@ def ver_carreras():
             for c in data:
                 print(f"[{c['Id_Carrera']}] {NEGRITA}{c['Nombre_Carrera']}{RESET} "
                       f"({c['Duracion']} años) - Nota: {c['Nota_de_corte']}")
-            print(f"\n{AZUL}--- JSON completo ---{RESET}\n")
-            print(json.dumps(data, indent=4, ensure_ascii=False))
+          #  print(f"\n{AZUL}--- JSON completo ---{RESET}\n")
+          # print(json.dumps(data, indent=4, ensure_ascii=False))
     else:
         print(f"{ROJO}Error al obtener las carreras.{RESET}")
-    pausa()
 
 def borrar_carrera():
-    limpiar_pantalla()
     print(f"\n{NEGRITA}--- BORRAR CARRERA ---{RESET}")
     id_carrera = input_numerico("ID de la carrera a borrar: ", tipo=int, minimo=1)
     confirmacion = input(f"{AMARILLO}¿Seguro que quieres borrar la carrera con ID {id_carrera}? (s/n): {RESET}").lower()
     if confirmacion != 's':
         print("Operación cancelada.")
-        pausa()
         return
     try:
         response = req.delete(f"{API_BASE}/borrar/carrera/{id_carrera}", timeout=5)
     except req.exceptions.RequestException:
         print(f"{ROJO}Error: No se pudo conectar con el servidor.{RESET}")
-        pausa()
         return
     if response.status_code == 200:
         print(f"{VERDE}{response.json()['mensaje']}{RESET}")
@@ -149,7 +139,6 @@ def borrar_carrera():
         print(f"{AMARILLO}Carrera no encontrada.{RESET}")
     else:
         print(f"{ROJO}Error: {response.text}{RESET}")
-    pausa()
 
 def main():
     if not comprobar_conexion():
@@ -159,13 +148,25 @@ def main():
         mostrar_menu()
         opcion = input(f"{AZUL}Selecciona una opción: {RESET}").strip()
         if opcion == "1":
-            añadir_carrera()
-        elif opcion == "2":
-            actualizar_carrera()
-        elif opcion == "3":
+            limpiar_pantalla()
             ver_carreras()
+            añadir_carrera()
+            pausa()
+        elif opcion == "2":
+            limpiar_pantalla()
+            ver_carreras()
+            actualizar_carrera()
+            pausa()
+        elif opcion == "3":
+            limpiar_pantalla()
+            ver_carreras()
+            pausa()
         elif opcion == "4":
+            limpiar_pantalla()
+            ver_carreras()
             borrar_carrera()
+            pausa()
+
         elif opcion == "5":
             print(f"\n{VERDE}Saliendo del programa...{RESET}\n")
             time.sleep(1)
