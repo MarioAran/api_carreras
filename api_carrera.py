@@ -20,8 +20,11 @@ def hola_mundo():
 
 @app.route('/ver/carreras/', methods=['GET'])
 def api_ver_carreras():
-    carreras = dao.ver_carreras(cursor)
-    return jsonify(carreras), 200
+    carreras_obj = dao.ver_carreras(cursor)
+    carreras_dict = [carrera.to_dict() for carrera in carreras_obj]
+    return jsonify(carreras_dict), 200
+
+
 
 @app.route('/agregar/carrera/', methods=['POST'])
 def api_agregar_carrera():
@@ -32,7 +35,6 @@ def api_agregar_carrera():
 
     if not nombre:
         return jsonify({"error": "Falta el nombre de la carrera"}), 400
-
     try:
         nota = float(nota)
         duracion = int(duracion)
