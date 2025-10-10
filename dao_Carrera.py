@@ -21,10 +21,7 @@ def añadir_carrera(cur,nueva_carrera):
         
 def modificar_carrera(cur, id_carrera, nombre_carrera, nota_corte, duracion):
     try:
-        cur.execute(
-            "UPDATE carrera SET Nombre_Carrera=%s, Nota_de_corte=%s, Duracion=%s WHERE Id_Carrera=%s",
-            (nombre_carrera, nota_corte, duracion, id_carrera)
-        )
+        cur.execute("UPDATE carrera SET Nombre_Carrera=%s, Nota_de_corte=%s, Duracion=%s WHERE Id_Carrera=%s",(nombre_carrera, nota_corte, duracion, id_carrera))
         return cur.rowcount
     except mysql.connector.Error as err:
         print(f"Error al modificar la carrera: {err}")
@@ -37,8 +34,6 @@ def ver_carreras(cur):
         cur.execute("SELECT * FROM carrera")
         filas = cur.fetchall()
         lista_carreras = []
-
-        # Recorremos cada fila del resultado y creamos un objeto carrera
         for f in filas:
             carrera_obj = c.carrera(
                 nombre_carrera=f['Nombre_Carrera'],
@@ -47,24 +42,10 @@ def ver_carreras(cur):
                 duracion=f['Duracion']
             )
             lista_carreras.append(carrera_obj)
-
         return lista_carreras
-
     except mysql.connector.Error as err:
         print("Error al ver las carreras:", err)
         return []
-
-
-
-
-'''def ver_carreras(cur):
-    try:
-        cur.execute("SELECT * FROM carrera")
-        
-        return cur.fetchall()    
-    except mysql.connector.Error as err:
-        print("Error al ver las carreras:", err)'''
-
         
 def borrar_carrera(cursor,borrar_carrera): 
     try:         
