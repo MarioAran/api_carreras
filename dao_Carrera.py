@@ -1,5 +1,6 @@
 import mysql.connector
-
+import carrera as c
+lista = []
 def connect_db(user,passwd):
     try:
         cnx = mysql.connector.connect(
@@ -11,13 +12,6 @@ def connect_db(user,passwd):
         return cnx
     except mysql.connector.Error as err:
         return err
-
-def user_query(cur,query):
-    try:
-        cur.execute(query)
-        return cur.fetchall()
-    except mysql.connector.Error as err:
-        print(f"Error: {err}")
 
 def añadir_carrera(cur,nueva_carrera):
     try:
@@ -35,19 +29,48 @@ def modificar_carrera(cur, id_carrera, nombre_carrera, nota_corte, duracion):
     except mysql.connector.Error as err:
         print(f"Error al modificar la carrera: {err}")
         return 0
-         
+
+
 def ver_carreras(cur):
+    import carrera as c
     try:
         cur.execute("SELECT * FROM carrera")
-        return cur.fetchall()
+        filas = cur.fetchall()
+        lista_carreras = []
+
+        # Recorremos cada fila del resultado y creamos un objeto carrera
+        for f in filas:
+            carrera_obj = c.carrera(
+                nombre_carrera=f['Nombre_Carrera'],
+                id_carrera=f['Id_Carrera'],
+                nota_corte=f['Nota_de_corte'],
+                duracion=f['Duracion']
+            )
+            lista_carreras.append(carrera_obj)
+
+        return lista_carreras
+
     except mysql.connector.Error as err:
-        print("Error al ver las carreras :", err)
+        print("Error al ver las carreras:", err)
+        return []
+
+
+
+
+'''def ver_carreras(cur):
+    try:
+        cur.execute("SELECT * FROM carrera")
         
-def borrar_carrera(cursor,borrar_carrera):
+        return cur.fetchall()    
+    except mysql.connector.Error as err:
+        print("Error al ver las carreras:", err)'''
+
+        
+def borrar_carrera(cursor,borrar_carrera): 
     try:         
-        cursor.execute("SELECT Nombre_Carrera FROM carrera WHERE id_Carrera = %s", (borrar_carrera.getter_id(),))
+        cursor.execute("SELECT Nombre_Carrera FROM carrera WHERE id_Carrera = %s", (borrar_carrera.get_id_carrera(),))
         resultados = cursor.fetchall()
-        cursor.execute("DELETE from carrera WHERE id_Carrera = %s", (borrar_carrera.getter_id(),))
+        cursor.execute("DELETE from carrera WHERE id_Carrera = %s", (borrar_carrera.get_id_carrera(),))
         return resultados
     except mysql.connector.Error as err:
         print("Error al borrar la carrera: ",err)  
