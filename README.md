@@ -42,7 +42,7 @@ cd api_carreras
 flask --app api_carrera.py run
 #Inicio del Programa 
 python3 api_carreras
-
+```
 ## Uso
 
 el programa mostrara un menu con varias opciones 
