@@ -1,4 +1,4 @@
-# 🚀 Nombre del Proyecto
+# 🚀 APi Carrea Universitaria
 
 Api creada con Python y Flask como framework conectandose a un mysql
 
