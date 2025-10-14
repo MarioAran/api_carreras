@@ -13,8 +13,7 @@ Api creada con Python y Flask como framework conectandose a un mysql
 ## 📝 Descripción
 
 Este proyecto tiene como objetivo **[probar a crear un api con los conocimientos adquiridos en el bootcamp de python con AI]**.  
-Por ejemplo:  
-> Una aplicacion para utilizar un api REST creada por nosotros y moder modificar la base de datos sin tener que acceder directamente a ella 
+Una aplicacion para utilizar un api REST creada por nosotros y moder modificar la base de datos sin tener que acceder directamente a ella 
 
 ---
 
