@@ -7,8 +7,6 @@ Api creada con Python y Flask como framework conectandose a un mysql
 - [Tecnologías](#-tecnologías)
 - [Instalación](#-instalación)
 - [Uso](#-uso)
-- [Estructura del Proyecto](#-estructura-del-proyecto)
-
 
 ---
 
@@ -43,7 +41,6 @@ flask --app api_carrera.py run
 #Inicio del Programa 
 python3 api_carreras
 ```
-## Uso
 ## Uso
 
 El programa mostrará un menú con varias opciones:  
