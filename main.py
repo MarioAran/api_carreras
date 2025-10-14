@@ -64,7 +64,7 @@ def input_numerico(mensaje, tipo=int, minimo=None, maximo=None):
     
 def añadir_carrera():
     print(f"\n{NEGRITA}--- AÑADIR CARRERA ---{RESET}")
-    nombre = input("Nombre de la carrera: ").strip()
+    nombre = input("Nombre de la carrera: ")
     duracion = input_numerico("Duración (en años): ", tipo=int, minimo=1)
     nota_corte = input_numerico("Nota de corte (0 - 14): ", tipo=float, minimo=0, maximo=14)
     payload = {"nombre": nombre, "duracion": duracion, "nota_corte": nota_corte}
