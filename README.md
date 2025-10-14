@@ -1,6 +1,6 @@
 # 🚀 Nombre del Proyecto
 
-Breve descripción del proyecto: qué hace, por qué existe y qué problema resuelve.
+Api creada con Python y Flask como framework conectandose a un mysql
 
 ## 🧩 Tabla de Contenidos
 - [Descripción](#-descripción)
@@ -16,18 +16,19 @@ Breve descripción del proyecto: qué hace, por qué existe y qué problema resu
 
 ## 📝 Descripción
 
-Este proyecto tiene como objetivo **[explicar brevemente la funcionalidad principal]**.  
+Este proyecto tiene como objetivo **[probar a crear un api con los conocimientos adquiridos en el bootcamp de python con AI]**.  
 Por ejemplo:  
-> Una aplicación web para gestionar tareas con autenticación y sincronización en tiempo real.
+> Una aplicacion para utilizar un api REST creada por nosotros y moder modificar la base de datos sin tener que acceder directamente a ella 
 
 ---
 
 ## ⚙️ Tecnologías
 
-- [Node.js](https://nodejs.org/)  
-- [React](https://react.dev/)  
-- [Express](https://expressjs.com/)  
-- [MongoDB](https://www.mongodb.com/)  
+- [Flask](https://flask.palletsprojects.com/en/stable/)  
+- [Python](https://www.python.org/)  
+- [Mysql](https://www.mysql.com/)  
+- [Workbench](https://www.mysql.com/products/workbench/)  
+
 *(Cambia o agrega las que correspondan a tu proyecto)*
 
 ---
@@ -37,5 +38,9 @@ Por ejemplo:
 Clona este repositorio y entra en la carpeta del proyecto:
 
 ```bash
-git clone https://github.com/tuusuario/nombre-del-proyecto.git
-cd nombre-del-proyecto
+git clone https://github.com/MarioAran/api_carreras.git
+cd api_carreras
+#Inicio del servidor e introduce las credenciales de la base de datos 
+flask --app api_carrera.py run
+#Inicio del Programa 
+python3 api_carreras
