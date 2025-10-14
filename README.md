@@ -8,9 +8,7 @@ Api creada con Python y Flask como framework conectandose a un mysql
 - [Instalación](#-instalación)
 - [Uso](#-uso)
 - [Estructura del Proyecto](#-estructura-del-proyecto)
-- [Contribuciones](#-contribuciones)
-- [Licencia](#-licencia)
-- [Autor](#-autor)
+
 
 ---
 
@@ -44,3 +42,22 @@ cd api_carreras
 flask --app api_carrera.py run
 #Inicio del Programa 
 python3 api_carreras
+
+## Uso
+
+el programa mostrara un menu con varias opciones 
+![alt text](files/Images/menu.png)
+
+segun la opcion que se escoja se podra realixar una accion u otra se tendra que seleccionar una segun la fucion que querramos realizar e introducir los datos de las carreras que querramos modificar, agregar o eliminar 
+
+#Agregar Carrera
+![alt text](files/Images/agregar_carrera.png)
+#actualizar carrera
+![alt text](files/Images/actualiza_carrera.png)
+#ver carreras
+![alt text](files/Images/ver_carrera.png)
+#eliminar carrera
+![alt text](files/Images/eliminar_carrera.png)
+
+
+
