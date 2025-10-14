@@ -46,18 +46,18 @@ python3 api_carreras
 ## Uso
 
 el programa mostrara un menu con varias opciones 
-[preview](./files/Images/main.png)
+[preview](https://github.com/MarioAran/api_carreras/blob/main/files/Images/main.png)
 
 segun la opcion que se escoja se podra realixar una accion u otra se tendra que seleccionar una segun la fucion que querramos realizar e introducir los datos de las carreras que querramos modificar, agregar o eliminar 
 
 #Agregar Carrera
-[agregar carrera](./files/Images/agregar_carrera.png)
+[agregar carrera](https://github.com/MarioAran/api_carreras/blob/main/files/Images/agregar_carrera.png)
 #actualizar carrera
-[actaulizar carrera](./files/Images/actualiza_carrera.png)
+[actaulizar carrera](https://github.com/MarioAran/api_carreras/blob/main/files/Images/actualizar%20carrera.png)
 #ver carreras
-[ver carrera](./files/Images/ver_carrera.png)
+[ver carrera](https://github.com/MarioAran/api_carreras/blob/main/files/Images/ver_carreras.png)
 #eliminar carrera
-[eliminar carrera](./files/Images/eliminar_carrera.png)
+[eliminar carrera](https://github.com/MarioAran/api_carreras/blob/main/files/Images/eliminar_carrera.png)
 
 
 
