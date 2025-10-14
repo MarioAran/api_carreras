@@ -44,20 +44,26 @@ flask --app api_carrera.py run
 python3 api_carreras
 ```
 ## Uso
+## Uso
 
-el programa mostrara un menu con varias opciones 
-[preview](https://github.com/MarioAran/api_carreras/blob/main/files/Images/main.png)
+El programa mostrará un menú con varias opciones:  
+![preview](https://github.com/MarioAran/api_carreras/blob/main/files/Images/main.png?raw=true)
 
-segun la opcion que se escoja se podra realixar una accion u otra se tendra que seleccionar una segun la fucion que querramos realizar e introducir los datos de las carreras que querramos modificar, agregar o eliminar 
+Según la opción que se escoja se podrá realizar una acción u otra.  
+Se tendrá que seleccionar una según la función que queramos realizar e introducir los datos de las carreras que queramos modificar, agregar o eliminar.
 
-#Agregar Carrera
-[agregar carrera](https://github.com/MarioAran/api_carreras/blob/main/files/Images/agregar_carrera.png)
-#actualizar carrera
-[actaulizar carrera](https://github.com/MarioAran/api_carreras/blob/main/files/Images/actualizar%20carrera.png)
-#ver carreras
-[ver carrera](https://github.com/MarioAran/api_carreras/blob/main/files/Images/ver_carreras.png)
-#eliminar carrera
-[eliminar carrera](https://github.com/MarioAran/api_carreras/blob/main/files/Images/eliminar_carrera.png)
+### 🟢 Agregar Carrera
+![agregar carrera](https://github.com/MarioAran/api_carreras/blob/main/files/Images/agregar_carrera.png?raw=true)
+
+### 🟡 Actualizar Carrera
+![actualizar carrera](https://github.com/MarioAran/api_carreras/blob/main/files/Images/actualizar%20carrera.png?raw=true)
+
+### 🔵 Ver Carreras
+![ver carrera](https://github.com/MarioAran/api_carreras/blob/main/files/Images/ver_carreras.png?raw=true)
+
+### 🔴 Eliminar Carrera
+![eliminar carrera](https://github.com/MarioAran/api_carreras/blob/main/files/Images/eliminar_carrera.png?raw=true)
+
 
 
 
