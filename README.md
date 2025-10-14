@@ -46,18 +46,18 @@ python3 api_carreras
 ## Uso
 
 el programa mostrara un menu con varias opciones 
-![alt text](files/Images/menu.png)
+![alt text](./files/Images/menu.png)
 
 segun la opcion que se escoja se podra realixar una accion u otra se tendra que seleccionar una segun la fucion que querramos realizar e introducir los datos de las carreras que querramos modificar, agregar o eliminar 
 
 #Agregar Carrera
-![alt text](files/Images/agregar_carrera.png)
+![alt text](./files/Images/agregar_carrera.png)
 #actualizar carrera
-![alt text](files/Images/actualiza_carrera.png)
+![alt text](./files/Images/actualiza_carrera.png)
 #ver carreras
-![alt text](files/Images/ver_carrera.png)
+![alt text](./files/Images/ver_carrera.png)
 #eliminar carrera
-![alt text](files/Images/eliminar_carrera.png)
+![alt text](./files/Images/eliminar_carrera.png)
 
 
 
