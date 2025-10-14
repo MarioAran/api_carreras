@@ -28,13 +28,14 @@ def api_ver_carreras():
 
 @app.route('/agregar/carrera/', methods=['POST'])
 def api_agregar_carrera():
+    error = ""
     data = request.get_json()
     nombre = data.get("nombre")
     nota = data.get("nota_corte")
     duracion = data.get("duracion")
 
     if not nombre:
-        return jsonify({"error": "Falta el nombre de la carrera"}), 400
+        error +="error: Falta el nombre de la carrera\n"
     try:
         nota = float(nota)
         duracion = int(duracion)
